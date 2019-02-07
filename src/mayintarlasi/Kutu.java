@@ -236,6 +236,10 @@ public class Kutu extends MayinTarlasi implements YardimciIslemler{
 			if(MayinTarlasi[i]==1)
 			{
 				Tarla[i] = "BOM";
+				yeniHesapIndis++;
+				yeniHesaplar[yeniHesapIndis] = 1;
+				yeniHesapYerleri[yeniHesapIndis] = i;
+				yeniHesapSayisi = yeniHesapIndis+1;
 			}
 		}
 	}
