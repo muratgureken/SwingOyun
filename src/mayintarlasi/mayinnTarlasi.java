@@ -63,7 +63,16 @@ public class mayinnTarlasi extends JFrame{
 		JLabel lblHamleSays = new JLabel("Hamle Say\u0131s\u0131");
 		lblHamleSays.setBounds(641, 46, 74, 20);
 		getContentPane().add(lblHamleSays);
-		
+
+		JLabel lblOyunSonuc = new JLabel("");
+		lblOyunSonuc.setFont(new Font("Tahoma", Font.BOLD, 14));
+		lblOyunSonuc.setHorizontalAlignment(SwingConstants.CENTER);
+		lblOyunSonuc.setBounds(325, 590, 294, 20);
+		getContentPane().add(lblOyunSonuc);
+		int ofset1=49,ofset3=30,ofset2=0,count=0, count2=0;
+		setResizable(false);
+		setSize(940, 650);
+
 		JButton btnYeniOyun = new JButton("Yeni Oyun");
 		btnYeniOyun.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -72,6 +81,7 @@ public class mayinnTarlasi extends JFrame{
 				secimSayisi = 0;
 				textFlagSayisi.setText(String.valueOf(mayinSayisi));
 				textSure.setText(String.valueOf(secimSayisi));
+				lblOyunSonuc.setText("");
 				a.KutuIlklendir(mayinSayisi,satirSayisi,sutunSayisi);
 				for(int i=0;i<256; i++)
 				{
@@ -82,9 +92,6 @@ public class mayinnTarlasi extends JFrame{
 		});
 		btnYeniOyun.setBounds(320, 45, 120, 23);
 		getContentPane().add(btnYeniOyun);
-		int ofset1=49,ofset3=30,ofset2=0,count=0, count2=0;
-		setResizable(false);
-		setSize(940, 650);
 
 		a.KutuIlklendir(mayinSayisi,satirSayisi,sutunSayisi);
 
@@ -104,7 +111,6 @@ public class mayinnTarlasi extends JFrame{
 					a.yeniHesapIndis = -1;
 					a.yeniHesapSayisi = 0;
 					secimSayisi++;
-					textSure.setText(String.valueOf(secimSayisi));
 					if(tglbtnFlagSecimi.isSelected())//flag secilirse ve flag sayisi kalmissa
 					{
 						if(a.Tarla[a.secilenIndis].contains("F"))/*flag secmis ve flag olan yerden flag kaldirilmak isteniyorsa*/
@@ -117,23 +123,26 @@ public class mayinnTarlasi extends JFrame{
 							array[a.secilenIndis].setFont(new Font("Tahoma", Font.PLAIN, 16));
 							array[a.secilenIndis].setForeground(Color.red);
 							textFlagSayisi.setText(String.valueOf(flagSayisi));
-						
+
 							Devam = OyunDevam(a, matrisBoyutu, hamleSayisi, flagSayisi);
 						}
 						else
 						{
-							a.Tarla[a.secilenIndis] = "F"+a.secilenIndis;
-							a.MayinKontrol[a.secilenIndis] = 1;
-							flagSayisi--;
-							array[a.secilenIndis].setText("F");
-							array[a.secilenIndis].setFont(new Font("Tahoma", Font.PLAIN, 16));
-							array[a.secilenIndis].setForeground(Color.red);
-							textFlagSayisi.setText(String.valueOf(flagSayisi));
-							Devam = OyunDevam(a, matrisBoyutu, hamleSayisi, flagSayisi);
+							if(flagSayisi>0)
+							{
+								a.Tarla[a.secilenIndis] = "F"+a.secilenIndis;
+								a.MayinKontrol[a.secilenIndis] = 1;
+								flagSayisi--;
+								array[a.secilenIndis].setText("F");
+								array[a.secilenIndis].setFont(new Font("Tahoma", Font.PLAIN, 16));
+								array[a.secilenIndis].setForeground(Color.red);
+								textFlagSayisi.setText(String.valueOf(flagSayisi));
+								Devam = OyunDevam(a, matrisBoyutu, hamleSayisi, flagSayisi);
+							}
 						}
 					}
 
-					if(!tglbtnFlagSecimi.isSelected())/*flag secilmemisse*/
+					if((!tglbtnFlagSecimi.isSelected())&&!(a.Tarla[a.secilenIndis].contains("F")))/*flag secilmemisse*/
 					{
 						if(a.MayinMi())
 						{
@@ -169,7 +178,8 @@ public class mayinnTarlasi extends JFrame{
 								{
 									array[i].setEnabled(false);
 								}
-								
+								lblOyunSonuc.setFont(new Font("Tahoma", Font.PLAIN, 16));
+								lblOyunSonuc.setText("OYUNU KAYBETTINIZ !...");
 								Devam = false;
 							}
 						}
@@ -188,8 +198,23 @@ public class mayinnTarlasi extends JFrame{
 							//a.MatrisCiz(matrisBoyutu, sutunSayisi);
 						}
 						Devam = OyunDevam(a, matrisBoyutu, hamleSayisi, flagSayisi);
+						if(!Devam)
+						{
+							for(int i=0;i<256; i++)
+							{
+								array[i].setEnabled(false);
+							}
+							lblOyunSonuc.setFont(new Font("Tahoma", Font.PLAIN, 16));
+							lblOyunSonuc.setText("TEBRIKLER, OYUNU KAZANDINIZ :)");
+						}
 						ilkTahmin = false;
 					}
+
+					if((!tglbtnFlagSecimi.isSelected())&&(a.Tarla[a.secilenIndis].contains("F")))
+					{
+						secimSayisi--;
+					}
+					textSure.setText(String.valueOf(secimSayisi));
 				}
 			}
 		};
@@ -228,11 +253,11 @@ public class mayinnTarlasi extends JFrame{
 			}
 		}
 
-		System.out.println("Flag Sayisi: "+flagSayisi+" Acilan Kutu: "+count2+" Toplam Hamle: "+hamleSayisi);
+		//System.out.println("Flag Sayisi: "+flagSayisi+" Acilan Kutu: "+count2+" Toplam Hamle: "+hamleSayisi);
 
 		if(count2==hamleSayisi)
 		{
-			System.out.println("Tebrikler, oyunu tamamladiniz :)");
+			//System.out.println("Tebrikler, oyunu tamamladiniz :)");
 			oyunDevam = false;			
 		}
 
