@@ -46,9 +46,9 @@ public class mayinnTarlasi extends JFrame{
 		getContentPane().add(textSure);
 		textSure.setColumns(10);
 		
-		JToggleButton tglbtnFalgSecimi = new JToggleButton("\u015Eekil");
-		tglbtnFalgSecimi.setBounds(387, 45, 121, 23);
-		getContentPane().add(tglbtnFalgSecimi);
+		JToggleButton tglbtnFlagSecimi = new JToggleButton("\u015Eekil");
+		tglbtnFlagSecimi.setBounds(387, 45, 121, 23);
+		getContentPane().add(tglbtnFlagSecimi);
 		
 		JLabel lblMaynSays = new JLabel("May\u0131n Say\u0131s\u0131");
 		lblMaynSays.setBounds(100, 44, 74, 20);
@@ -82,14 +82,18 @@ public class mayinnTarlasi extends JFrame{
 					a.secilenIndis = a.secilenIndis - 1;
 					a.yeniHesapIndis = -1;
 					a.yeniHesapSayisi = 0;
-					if(false)//flag secilirse ve flag sayisi kalmissa
+					if(tglbtnFlagSecimi.isSelected())//flag secilirse ve flag sayisi kalmissa
 					{
 						a.Tarla[a.secilenIndis] = "F"+a.secilenIndis;
 						a.MayinKontrol[a.secilenIndis] = 1;
 						flagSayisi--;
+						array[a.secilenIndis].setText("FLAG");
+						array[a.secilenIndis].setFont(new Font("Tahoma", Font.PLAIN, 16));
+						array[a.secilenIndis].setForeground(Color.red);
+						textFlagSayisi.setText(String.valueOf(flagSayisi));
 						Devam = OyunDevam(a, matrisBoyutu, hamleSayisi, flagSayisi);
 					}
-					if(false/*flag secmis ve flag olan yerden flag kaldirilmak isteniyorsa*/)
+					if(tglbtnFlagSecimi.isSelected()/*flag secmis ve flag olan yerden flag kaldirilmak isteniyorsa*/)
 					{
 						if(a.Tarla[a.secilenIndis].contains("F"))
 						{
@@ -97,10 +101,14 @@ public class mayinnTarlasi extends JFrame{
 							a.MatrisCiz(matrisBoyutu, sutunSayisi);
 							a.MayinKontrol[a.secilenIndis] = 0;
 							flagSayisi++;
+							array[a.secilenIndis].setText("");
+							array[a.secilenIndis].setFont(new Font("Tahoma", Font.PLAIN, 16));
+							array[a.secilenIndis].setForeground(Color.red);
+							textFlagSayisi.setText(String.valueOf(flagSayisi));
 						}
 						Devam = OyunDevam(a, matrisBoyutu, hamleSayisi, flagSayisi);
 					}
-					if(true)/*flag secilmemisse*/
+					if(!tglbtnFlagSecimi.isSelected())/*flag secilmemisse*/
 					{
 						if(a.MayinMi())
 						{
@@ -125,12 +133,11 @@ public class mayinnTarlasi extends JFrame{
 								//a.MatrisCiz(matrisBoyutu, sutunSayisi);
 								a.MayinKontrol[a.secilenIndis] = 1;
 								
-								for(int i=0;i<a.yeniHesapSayisi; i++)
-								{
-									array[a.yeniHesapYerleri[i]].setText(String.valueOf(a.yeniHesaplar[i]));
-									array[a.yeniHesapYerleri[i]].setFont(new Font("Tahoma", Font.PLAIN, 16));
-									array[a.yeniHesapYerleri[i]].setForeground(Color.red);
-								}
+								//tum mayinlari goster
+								array[a.secilenIndis].setText(String.valueOf("BOM"));
+								array[a.secilenIndis].setFont(new Font("Tahoma", Font.PLAIN, 16));
+								array[a.secilenIndis].setForeground(Color.red);
+								
 								Devam = false;
 							}
 						}
