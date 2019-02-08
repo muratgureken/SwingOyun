@@ -2,14 +2,15 @@ package mayintarlasi;
 import java.io.*;
 import java.util.Random;
 public class Kutu extends MayinTarlasi implements YardimciIslemler{
-	public int[] Mayinlar = new int[100];
+	public int[] Mayinlar = new int[256];
 	public int[] MayinTarlasi;
 	public int[] MayinKontrol;
 	public int[] Komsular = new int[8]; 
-	public String [] Tarla;
+	public String [] Tarla, yeniHesaplar;
 	public int secilenIndis, komsuSayisi, mayinKomsular, yeniHesapSayisi, yeniHesapIndis;
-	public int[] yeniHesaplar, yeniHesapYerleri;
-
+	public int[] yeniHesapYerleri;
+	
+	
 	public void KutuIlklendir(int sayi, int satirSayisi, int sutunSayisi)
 	{
 		int matrisBoyutu=satirSayisi*sutunSayisi;
@@ -17,8 +18,8 @@ public class Kutu extends MayinTarlasi implements YardimciIslemler{
 		MayinTarlasi = new int[matrisBoyutu];
 		MayinKontrol = new int[matrisBoyutu];
 		Tarla = new String[matrisBoyutu];
-		yeniHesaplar = new int[100];
-		yeniHesapYerleri = new int[100];
+		yeniHesaplar = new String[256];
+		yeniHesapYerleri = new int[256];
 		
 		yeniHesapSayisi = 0;
 		RastgeleSayiUret(sayi,matrisBoyutu);
@@ -188,12 +189,13 @@ public class Kutu extends MayinTarlasi implements YardimciIslemler{
 		//System.out.println(a.mayinKomsular+" "+a.komsuSayisi+" "+a.secilenIndis);
 		Tarla[a.secilenIndis] = Integer.toString(a.mayinKomsular);
 		yeniHesapIndis++;
-		yeniHesaplar[yeniHesapIndis] = a.mayinKomsular;
+		yeniHesaplar[yeniHesapIndis] = String.valueOf(a.mayinKomsular);
 		yeniHesapYerleri[yeniHesapIndis] = a.secilenIndis;
 		yeniHesapSayisi = yeniHesapIndis+1;
 		MayinKontrol[a.secilenIndis] = 1;
 		if(a.mayinKomsular==0)
 		{
+			yeniHesaplar[yeniHesapIndis] = " ";
 			for(int i=0;i<a.komsuSayisi;i++)
 			{
 				/*System.out.println("Komsu:"+a.Komsular[i]+" kontrol:"+MayinKontrol[a.Komsular[i]]+" mayin mi? "+
@@ -218,7 +220,7 @@ public class Kutu extends MayinTarlasi implements YardimciIslemler{
 				{
 					Tarla[komsu.secilenIndis] = Integer.toString(komsu.mayinKomsular);
 					yeniHesapIndis++;
-					yeniHesaplar[yeniHesapIndis] = komsu.mayinKomsular;
+					yeniHesaplar[yeniHesapIndis] = String.valueOf(komsu.mayinKomsular);
 					yeniHesapYerleri[yeniHesapIndis] = komsu.secilenIndis;
 					yeniHesapSayisi = yeniHesapIndis+1;
 				}
@@ -237,7 +239,7 @@ public class Kutu extends MayinTarlasi implements YardimciIslemler{
 			{
 				Tarla[i] = "BOM";
 				yeniHesapIndis++;
-				yeniHesaplar[yeniHesapIndis] = 1;
+				yeniHesaplar[yeniHesapIndis] = " ";
 				yeniHesapYerleri[yeniHesapIndis] = i;
 				yeniHesapSayisi = yeniHesapIndis+1;
 			}

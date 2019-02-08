@@ -82,6 +82,7 @@ public class mayinnTarlasi extends JFrame{
 				textFlagSayisi.setText(String.valueOf(mayinSayisi));
 				textSure.setText(String.valueOf(secimSayisi));
 				lblOyunSonuc.setText("");
+				ilkTahmin = true;
 				a.KutuIlklendir(mayinSayisi,satirSayisi,sutunSayisi);
 				for(int i=0;i<256; i++)
 				{
@@ -154,7 +155,7 @@ public class mayinnTarlasi extends JFrame{
 
 								for(int i=0;i<a.yeniHesapSayisi; i++)
 								{
-									array[a.yeniHesapYerleri[i]].setText(String.valueOf(a.yeniHesaplar[i]));
+									array[a.yeniHesapYerleri[i]].setText(a.yeniHesaplar[i]);
 									array[a.yeniHesapYerleri[i]].setFont(new Font("Tahoma", Font.PLAIN, 16));
 									array[a.yeniHesapYerleri[i]].setForeground(Color.red);
 								}
@@ -190,7 +191,7 @@ public class mayinnTarlasi extends JFrame{
 							a.TarlayiDoldur(a, a.Tarla, a.MayinTarlasi, a.MayinKontrol, satirSayisi, sutunSayisi, 0);
 							for(int i=0;i<a.yeniHesapSayisi; i++)
 							{
-								array[a.yeniHesapYerleri[i]].setText(String.valueOf(a.yeniHesaplar[i]));
+								array[a.yeniHesapYerleri[i]].setText(a.yeniHesaplar[i]);
 								array[a.yeniHesapYerleri[i]].setFont(new Font("Tahoma", Font.PLAIN, 16));
 								array[a.yeniHesapYerleri[i]].setForeground(Color.red);
 								array[a.yeniHesapYerleri[i]].setEnabled(false);
