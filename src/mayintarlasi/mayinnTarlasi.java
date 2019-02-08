@@ -5,6 +5,8 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -12,6 +14,8 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 import javax.swing.SwingConstants;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.ChangeEvent;
 
 public class mayinnTarlasi extends JFrame{
 	int mayinSayisi=40,hamleSayisi, satirSayisi=16, sutunSayisi=16, flagSayisi, secimSayisi=0;
@@ -19,11 +23,12 @@ public class mayinnTarlasi extends JFrame{
 	JButton[] array= new JButton[256];
 	private JTextField textFlagSayisi;
 	private JTextField textSure;
+	//ImageIcon flag = new ImageIcon("FLAG.ICON");
+	int matrisBoyutu = satirSayisi*sutunSayisi;
 
 	public mayinnTarlasi() {
 
 		Kutu a = new Kutu();
-		int matrisBoyutu = satirSayisi*sutunSayisi;
 		hamleSayisi = matrisBoyutu - mayinSayisi;
 		flagSayisi = mayinSayisi;
 
@@ -52,8 +57,12 @@ public class mayinnTarlasi extends JFrame{
 		getContentPane().add(textSure);
 		textSure.setColumns(10);
 
-		JToggleButton tglbtnFlagSecimi = new JToggleButton("\u015Eekil");
+		JToggleButton tglbtnFlagSecimi = new JToggleButton("");
+		//tglbtnFlagSecimi.setIcon(new ImageIcon("C:\\Users\\MGUREKEN\\Downloads\\SwingOyun-master\\FLAG.ICO"));
 		tglbtnFlagSecimi.setBounds(467, 45, 121, 23);
+		tglbtnFlagSecimi.setText("F");
+		tglbtnFlagSecimi.setFont(new Font("Tahoma", Font.BOLD, 16));
+		tglbtnFlagSecimi.setForeground(Color.red);
 		getContentPane().add(tglbtnFlagSecimi);
 
 		JLabel lblMaynSays = new JLabel("May\u0131n Say\u0131s\u0131");
@@ -70,8 +79,8 @@ public class mayinnTarlasi extends JFrame{
 		lblOyunSonuc.setBounds(325, 590, 294, 20);
 		getContentPane().add(lblOyunSonuc);
 		int ofset1=49,ofset3=30,ofset2=0,count=0, count2=0;
-		setResizable(false);
-		setSize(940, 650);
+		/*setResizable(false);
+		setSize(940, 650);*/
 
 		JButton btnYeniOyun = new JButton("Yeni Oyun");
 		btnYeniOyun.addActionListener(new ActionListener() {
@@ -83,6 +92,10 @@ public class mayinnTarlasi extends JFrame{
 				textSure.setText(String.valueOf(secimSayisi));
 				lblOyunSonuc.setText("");
 				ilkTahmin = true;
+				tglbtnFlagSecimi.setSelected(false);
+				tglbtnFlagSecimi.setText("F");
+				tglbtnFlagSecimi.setFont(new Font("Tahoma", Font.BOLD, 16));
+				tglbtnFlagSecimi.setForeground(Color.red);
 				a.KutuIlklendir(mayinSayisi,satirSayisi,sutunSayisi);
 				for(int i=0;i<256; i++)
 				{
@@ -149,17 +162,19 @@ public class mayinnTarlasi extends JFrame{
 						{
 							if(ilkTahmin)/*ilk tahmin oldugunda rastgele yeni sayi uret*/
 							{
-								flagSayisi--;
-								a.Tarla[a.secilenIndis] = "F"+a.secilenIndis;
-								a.MayinKontrol[a.secilenIndis] = 1;
-
+								a.MayiniDegistir(matrisBoyutu, mayinSayisi); 
+								a.KomsulariBul(satirSayisi, sutunSayisi);
+								a.NoktaDegeri(a.MayinTarlasi);
+								a.TarlayiDoldur(a, a.Tarla, a.MayinTarlasi, a.MayinKontrol, satirSayisi, sutunSayisi, 0);
 								for(int i=0;i<a.yeniHesapSayisi; i++)
 								{
 									array[a.yeniHesapYerleri[i]].setText(a.yeniHesaplar[i]);
 									array[a.yeniHesapYerleri[i]].setFont(new Font("Tahoma", Font.PLAIN, 16));
 									array[a.yeniHesapYerleri[i]].setForeground(Color.red);
+									array[a.yeniHesapYerleri[i]].setEnabled(false);
 								}
-								//a.MatrisCiz(matrisBoyutu, sutunSayisi);
+								/*lblOyunSonuc.setFont(new Font("Tahoma", Font.PLAIN, 16));
+								lblOyunSonuc.setText("ILK TAHMIN MAYIN :)");*/
 							}
 							else
 							{

@@ -9,8 +9,8 @@ public class Kutu extends MayinTarlasi implements YardimciIslemler{
 	public String [] Tarla, yeniHesaplar;
 	public int secilenIndis, komsuSayisi, mayinKomsular, yeniHesapSayisi, yeniHesapIndis;
 	public int[] yeniHesapYerleri;
-	
-	
+
+
 	public void KutuIlklendir(int sayi, int satirSayisi, int sutunSayisi)
 	{
 		int matrisBoyutu=satirSayisi*sutunSayisi;
@@ -20,13 +20,13 @@ public class Kutu extends MayinTarlasi implements YardimciIslemler{
 		Tarla = new String[matrisBoyutu];
 		yeniHesaplar = new String[256];
 		yeniHesapYerleri = new int[256];
-		
+
 		yeniHesapSayisi = 0;
 		RastgeleSayiUret(sayi,matrisBoyutu);
 		MatrisIlklendir(matrisBoyutu);
 		MayinlariYerlestir(sayi);
 		MayinTarlasiOlustur(matrisBoyutu);
-		MatrisCiz(matrisBoyutu,sutunSayisi);            
+		//MatrisCiz(matrisBoyutu,sutunSayisi);            
 	}
 
 	public boolean OncedenVarmi(int randomSayi, int count)
@@ -126,6 +126,36 @@ public class Kutu extends MayinTarlasi implements YardimciIslemler{
 			}	
 		}
 	}
+
+	public void MayiniDegistir(int matrisBoyutu, int MayinSayisi) {
+		int rastgeleSayi, indis=0;
+		boolean Devam=true;
+		Random rand = new Random();
+
+		while(Devam)
+		{
+			rastgeleSayi = rand.nextInt(matrisBoyutu-1);
+			if(OncedenVarmi(rastgeleSayi, MayinSayisi))
+			{
+				continue;
+			}
+
+			for(int i=0; i<MayinSayisi; i++)
+			{
+				if(Mayinlar[i]==secilenIndis)
+				{
+					indis = i;
+					break;
+				}
+			}
+
+			Mayinlar[indis] = rastgeleSayi;
+			Devam=false;	
+		}
+		MatrisIlklendir(matrisBoyutu);
+		MayinlariYerlestir(MayinSayisi);
+		MayinTarlasiOlustur(matrisBoyutu);
+	}        
 
 	@Override
 	public void MatrisIlklendir(int matrisBoyutu) {
