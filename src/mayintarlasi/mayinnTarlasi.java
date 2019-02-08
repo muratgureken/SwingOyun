@@ -5,6 +5,9 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
@@ -60,11 +63,30 @@ public class mayinnTarlasi extends JFrame{
 		JToggleButton tglbtnFlagSecimi = new JToggleButton("");
 		//tglbtnFlagSecimi.setIcon(new ImageIcon("C:\\Users\\MGUREKEN\\Downloads\\SwingOyun-master\\FLAG.ICO"));
 		tglbtnFlagSecimi.setBounds(467, 45, 121, 23);
-		tglbtnFlagSecimi.setText("F");
+		tglbtnFlagSecimi.setText("M");
 		tglbtnFlagSecimi.setFont(new Font("Tahoma", Font.BOLD, 16));
-		tglbtnFlagSecimi.setForeground(Color.red);
+		tglbtnFlagSecimi.setForeground(Color.blue);
 		getContentPane().add(tglbtnFlagSecimi);
-
+		tglbtnFlagSecimi.addItemListener(new ItemListener() {
+			
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				if(e.getStateChange()==ItemEvent.SELECTED)
+				{
+					tglbtnFlagSecimi.setText("F");
+					tglbtnFlagSecimi.setFont(new Font("Tahoma", Font.BOLD, 16));
+					tglbtnFlagSecimi.setForeground(Color.red);
+				}
+				else if(e.getStateChange()==ItemEvent.DESELECTED)
+				{
+					tglbtnFlagSecimi.setText("M");
+					tglbtnFlagSecimi.setFont(new Font("Tahoma", Font.BOLD, 16));
+					tglbtnFlagSecimi.setForeground(Color.blue);
+				}		
+			}
+		});
+		
+		
 		JLabel lblMaynSays = new JLabel("May\u0131n Say\u0131s\u0131");
 		lblMaynSays.setBounds(100, 44, 74, 20);
 		getContentPane().add(lblMaynSays);
@@ -93,9 +115,9 @@ public class mayinnTarlasi extends JFrame{
 				lblOyunSonuc.setText("");
 				ilkTahmin = true;
 				tglbtnFlagSecimi.setSelected(false);
-				tglbtnFlagSecimi.setText("F");
+				tglbtnFlagSecimi.setText("M");
 				tglbtnFlagSecimi.setFont(new Font("Tahoma", Font.BOLD, 16));
-				tglbtnFlagSecimi.setForeground(Color.red);
+				tglbtnFlagSecimi.setForeground(Color.blue);
 				a.KutuIlklendir(mayinSayisi,satirSayisi,sutunSayisi);
 				for(int i=0;i<256; i++)
 				{
@@ -130,11 +152,11 @@ public class mayinnTarlasi extends JFrame{
 						if(a.Tarla[a.secilenIndis].contains("F"))/*flag secmis ve flag olan yerden flag kaldirilmak isteniyorsa*/
 						{
 							a.Tarla[a.secilenIndis] = "T"+a.secilenIndis;
-							a.MatrisCiz(matrisBoyutu, sutunSayisi);
+							//a.MatrisCiz(matrisBoyutu, sutunSayisi);
 							a.MayinKontrol[a.secilenIndis] = 0;
 							flagSayisi++;
 							array[a.secilenIndis].setText("");
-							array[a.secilenIndis].setFont(new Font("Tahoma", Font.PLAIN, 16));
+							array[a.secilenIndis].setFont(new Font("Tahoma", Font.BOLD, 16));
 							array[a.secilenIndis].setForeground(Color.red);
 							textFlagSayisi.setText(String.valueOf(flagSayisi));
 
@@ -148,7 +170,7 @@ public class mayinnTarlasi extends JFrame{
 								a.MayinKontrol[a.secilenIndis] = 1;
 								flagSayisi--;
 								array[a.secilenIndis].setText("F");
-								array[a.secilenIndis].setFont(new Font("Tahoma", Font.PLAIN, 16));
+								array[a.secilenIndis].setFont(new Font("Tahoma", Font.BOLD, 16));
 								array[a.secilenIndis].setForeground(Color.red);
 								textFlagSayisi.setText(String.valueOf(flagSayisi));
 								Devam = OyunDevam(a, matrisBoyutu, hamleSayisi, flagSayisi);
@@ -169,7 +191,7 @@ public class mayinnTarlasi extends JFrame{
 								for(int i=0;i<a.yeniHesapSayisi; i++)
 								{
 									array[a.yeniHesapYerleri[i]].setText(a.yeniHesaplar[i]);
-									array[a.yeniHesapYerleri[i]].setFont(new Font("Tahoma", Font.PLAIN, 16));
+									array[a.yeniHesapYerleri[i]].setFont(new Font("Tahoma", Font.BOLD, 16));
 									array[a.yeniHesapYerleri[i]].setForeground(Color.red);
 									array[a.yeniHesapYerleri[i]].setEnabled(false);
 								}
@@ -187,14 +209,14 @@ public class mayinnTarlasi extends JFrame{
 								for(int i=0;i<a.yeniHesapSayisi; i++)
 								{
 									array[a.yeniHesapYerleri[i]].setText("B");
-									array[a.yeniHesapYerleri[i]].setFont(new Font("Tahoma", Font.PLAIN, 16));
+									array[a.yeniHesapYerleri[i]].setFont(new Font("Tahoma", Font.BOLD, 16));
 									array[a.yeniHesapYerleri[i]].setForeground(Color.red);
 								}
 								for(int i=0;i<256; i++)
 								{
 									array[i].setEnabled(false);
 								}
-								lblOyunSonuc.setFont(new Font("Tahoma", Font.PLAIN, 16));
+								lblOyunSonuc.setFont(new Font("Tahoma", Font.BOLD, 16));
 								lblOyunSonuc.setText("OYUNU KAYBETTINIZ !...");
 								Devam = false;
 							}
@@ -207,7 +229,7 @@ public class mayinnTarlasi extends JFrame{
 							for(int i=0;i<a.yeniHesapSayisi; i++)
 							{
 								array[a.yeniHesapYerleri[i]].setText(a.yeniHesaplar[i]);
-								array[a.yeniHesapYerleri[i]].setFont(new Font("Tahoma", Font.PLAIN, 16));
+								array[a.yeniHesapYerleri[i]].setFont(new Font("Tahoma", Font.BOLD, 16));
 								array[a.yeniHesapYerleri[i]].setForeground(Color.red);
 								array[a.yeniHesapYerleri[i]].setEnabled(false);
 							}
@@ -220,7 +242,7 @@ public class mayinnTarlasi extends JFrame{
 							{
 								array[i].setEnabled(false);
 							}
-							lblOyunSonuc.setFont(new Font("Tahoma", Font.PLAIN, 16));
+							lblOyunSonuc.setFont(new Font("Tahoma", Font.BOLD, 16));
 							lblOyunSonuc.setText("TEBRIKLER, OYUNU KAZANDINIZ :)");
 						}
 						ilkTahmin = false;
