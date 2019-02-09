@@ -22,15 +22,14 @@ import javax.swing.event.ChangeEvent;
 
 public class mayinnTarlasi extends JFrame{
 	int mayinSayisi=40,hamleSayisi, satirSayisi=16, sutunSayisi=16, flagSayisi, secimSayisi=0;
-	boolean Devam=true, ilkTahmin=true;
+	boolean Devam=true, ilkTahmin=true, ilkTus=true, state=true;
 	JButton[] array= new JButton[256];
 	private JTextField textFlagSayisi;
-	private JTextField textSure;
 	//ImageIcon flag = new ImageIcon("FLAG.ICON");
 	int matrisBoyutu = satirSayisi*sutunSayisi;
-
-	public mayinnTarlasi() {
-
+	int minutes=0, seconds=0, miliseconds;
+	private JTextField textZaman;
+	public mayinnTarlasi() {		
 		Kutu a = new Kutu();
 		hamleSayisi = matrisBoyutu - mayinSayisi;
 		flagSayisi = mayinSayisi;
@@ -47,18 +46,11 @@ public class mayinnTarlasi extends JFrame{
 		textFlagSayisi = new JTextField();
 		textFlagSayisi.setHorizontalAlignment(SwingConstants.CENTER);
 		textFlagSayisi.setEditable(false);
-		textFlagSayisi.setBounds(184, 44, 86, 20);
+		textFlagSayisi.setBounds(72, 45, 96, 39);
 		getContentPane().add(textFlagSayisi);
 		textFlagSayisi.setColumns(10);
 		textFlagSayisi.setText(String.valueOf(mayinSayisi));
 		textFlagSayisi.setFont(new Font("Tahoma", Font.PLAIN, 16));
-
-		textSure = new JTextField();
-		textSure.setHorizontalAlignment(SwingConstants.CENTER);
-		textSure.setBounds(729, 46, 86, 20);
-		textSure.setEditable(false);
-		getContentPane().add(textSure);
-		textSure.setColumns(10);
 
 		JToggleButton tglbtnFlagSecimi = new JToggleButton("");
 		//tglbtnFlagSecimi.setIcon(new ImageIcon("C:\\Users\\MGUREKEN\\Downloads\\SwingOyun-master\\FLAG.ICO"));
@@ -85,15 +77,6 @@ public class mayinnTarlasi extends JFrame{
 				}		
 			}
 		});
-		
-		
-		JLabel lblMaynSays = new JLabel("May\u0131n Say\u0131s\u0131");
-		lblMaynSays.setBounds(100, 44, 74, 20);
-		getContentPane().add(lblMaynSays);
-
-		JLabel lblHamleSays = new JLabel("Hamle Say\u0131s\u0131");
-		lblHamleSays.setBounds(641, 46, 74, 20);
-		getContentPane().add(lblHamleSays);
 
 		JLabel lblOyunSonuc = new JLabel("");
 		lblOyunSonuc.setFont(new Font("Tahoma", Font.BOLD, 14));
@@ -111,7 +94,6 @@ public class mayinnTarlasi extends JFrame{
 				flagSayisi = mayinSayisi;
 				secimSayisi = 0;
 				textFlagSayisi.setText(String.valueOf(mayinSayisi));
-				textSure.setText(String.valueOf(secimSayisi));
 				lblOyunSonuc.setText("");
 				ilkTahmin = true;
 				tglbtnFlagSecimi.setSelected(false);
@@ -119,6 +101,11 @@ public class mayinnTarlasi extends JFrame{
 				tglbtnFlagSecimi.setFont(new Font("Tahoma", Font.BOLD, 16));
 				tglbtnFlagSecimi.setForeground(Color.blue);
 				a.KutuIlklendir(mayinSayisi,satirSayisi,sutunSayisi);
+				ilkTus = true;
+				miliseconds = 0;
+				seconds = 0;
+				minutes = 0;
+				state = true;
 				for(int i=0;i<256; i++)
 				{
 					array[i].setEnabled(true);
@@ -128,6 +115,13 @@ public class mayinnTarlasi extends JFrame{
 		});
 		btnYeniOyun.setBounds(320, 45, 120, 23);
 		getContentPane().add(btnYeniOyun);
+		
+		textZaman = new JTextField();
+		textZaman.setFont(new Font("Tahoma", Font.BOLD, 20));
+		textZaman.setEditable(false);
+		textZaman.setBounds(756, 43, 96, 39);
+		getContentPane().add(textZaman);
+		textZaman.setColumns(10);
 
 		a.KutuIlklendir(mayinSayisi,satirSayisi,sutunSayisi);
 
@@ -137,11 +131,52 @@ public class mayinnTarlasi extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				if(e.getSource() instanceof JButton)
 				{
+					if(ilkTus)
+					{
+						Thread zaman = new Thread()
+						{
+							public void run()
+							{								
+								for(;;)
+								{
+									if(state)
+									{
+										try {
+											sleep(1);
+											if(miliseconds>999)
+											{
+												miliseconds = 0;
+												seconds++;
+											}
+											if(seconds>=60)
+											{
+												seconds = 0;
+												minutes++;
+											}
+											if(minutes>=60)
+											{
+												seconds = 0;
+												minutes = 0;
+											}
+											textZaman.setText(Integer.toString(minutes)+":"+Integer.toString(seconds)+":"+Integer.toString(miliseconds));
+											miliseconds++;
+											
+										} catch (Exception e2) {
+											
+										}
+									}
+									else
+									{
+										break;
+									}
+								}
+							}
+						};
+						ilkTus = false;
+						zaman.start();
+					}
+					
 					String text = ((JButton)e.getSource()).getText();
-					//((JButton)e.getSource()).setEnabled(false);
-					/*((JButton)e.getSource()).setFont(new Font("Tahoma", Font.PLAIN, 10));
-					((JButton)e.getSource()).setForeground(Color.red);
-					((JButton)e.getSource()).setText(((JButton)e.getSource()).getName());*/
 					a.secilenIndis = Integer.parseInt(((JButton)e.getSource()).getName());
 					a.secilenIndis = a.secilenIndis - 1;
 					a.yeniHesapIndis = -1;
@@ -218,6 +253,7 @@ public class mayinnTarlasi extends JFrame{
 								}
 								lblOyunSonuc.setFont(new Font("Tahoma", Font.BOLD, 16));
 								lblOyunSonuc.setText("OYUNU KAYBETTINIZ !...");
+								state = false;
 								Devam = false;
 							}
 						}
@@ -243,6 +279,7 @@ public class mayinnTarlasi extends JFrame{
 								array[i].setEnabled(false);
 							}
 							lblOyunSonuc.setFont(new Font("Tahoma", Font.BOLD, 16));
+							state = false;
 							lblOyunSonuc.setText("TEBRIKLER, OYUNU KAZANDINIZ :)");
 						}
 						ilkTahmin = false;
@@ -252,7 +289,6 @@ public class mayinnTarlasi extends JFrame{
 					{
 						secimSayisi--;
 					}
-					textSure.setText(String.valueOf(secimSayisi));
 				}
 			}
 		};
@@ -279,6 +315,7 @@ public class mayinnTarlasi extends JFrame{
 			count2++;
 		}
 	}
+	
 	public static boolean OyunDevam(Kutu a, int matrisBoyutu, int hamleSayisi, int flagSayisi)
 	{
 		boolean oyunDevam=true;
