@@ -14,6 +14,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 import javax.swing.SwingConstants;
@@ -25,15 +26,18 @@ public class mayinnTarlasi extends JFrame{
 	boolean Devam=true, ilkTahmin=true, ilkTus=true, state=true;
 	JButton[] array= new JButton[256];
 	private JTextField textFlagSayisi;
+	Color butonRengi = new Color(0,0,0);
 	//ImageIcon flag = new ImageIcon("FLAG.ICON");
 	int matrisBoyutu = satirSayisi*sutunSayisi;
 	int minutes=0, seconds=0, miliseconds;
 	private JTextField textZaman;
-	public mayinnTarlasi() {		
+	public mayinnTarlasi() {				
 		Kutu a = new Kutu();
 		hamleSayisi = matrisBoyutu - mayinSayisi;
 		flagSayisi = mayinSayisi;
 
+		getContentPane().setBackground(Color.LIGHT_GRAY);
+		
 		JButton button = new JButton("New button");
 		getContentPane().add(button, BorderLayout.WEST);
 		getContentPane().setLayout(null);
@@ -44,6 +48,8 @@ public class mayinnTarlasi extends JFrame{
 		getContentPane().add(lblMaynTarlas);
 
 		textFlagSayisi = new JTextField();
+		textFlagSayisi.setBackground(Color.WHITE);
+		textFlagSayisi.setForeground(Color.BLACK);
 		textFlagSayisi.setHorizontalAlignment(SwingConstants.CENTER);
 		textFlagSayisi.setEditable(false);
 		textFlagSayisi.setBounds(72, 45, 96, 39);
@@ -105,11 +111,12 @@ public class mayinnTarlasi extends JFrame{
 				miliseconds = 0;
 				seconds = 0;
 				minutes = 0;
-				state = true;
-				for(int i=0;i<256; i++)
+				state = false;
+				for(int i=0;i<array.length; i++)
 				{
 					array[i].setEnabled(true);
 					array[i].setText("");
+					array[i].setBackground(butonRengi);
 				}
 			}
 		});
@@ -133,6 +140,7 @@ public class mayinnTarlasi extends JFrame{
 				{
 					if(ilkTus)
 					{
+						state = true;
 						Thread zaman = new Thread()
 						{
 							public void run()
@@ -192,7 +200,8 @@ public class mayinnTarlasi extends JFrame{
 							flagSayisi++;
 							array[a.secilenIndis].setText("");
 							array[a.secilenIndis].setFont(new Font("Tahoma", Font.BOLD, 16));
-							array[a.secilenIndis].setForeground(Color.red);
+							//array[a.secilenIndis].setForeground(Color.red);
+							array[a.secilenIndis].setBackground(butonRengi);
 							textFlagSayisi.setText(String.valueOf(flagSayisi));
 
 							Devam = OyunDevam(a, matrisBoyutu, hamleSayisi, flagSayisi);
@@ -206,7 +215,8 @@ public class mayinnTarlasi extends JFrame{
 								flagSayisi--;
 								array[a.secilenIndis].setText("F");
 								array[a.secilenIndis].setFont(new Font("Tahoma", Font.BOLD, 16));
-								array[a.secilenIndis].setForeground(Color.red);
+								array[a.secilenIndis].setForeground(Color.white);
+								array[a.secilenIndis].setBackground(Color.red);
 								textFlagSayisi.setText(String.valueOf(flagSayisi));
 								Devam = OyunDevam(a, matrisBoyutu, hamleSayisi, flagSayisi);
 							}
@@ -229,6 +239,7 @@ public class mayinnTarlasi extends JFrame{
 									array[a.yeniHesapYerleri[i]].setFont(new Font("Tahoma", Font.BOLD, 16));
 									array[a.yeniHesapYerleri[i]].setForeground(Color.red);
 									array[a.yeniHesapYerleri[i]].setEnabled(false);
+									array[a.yeniHesapYerleri[i]].setBackground(Color.white);
 								}
 								/*lblOyunSonuc.setFont(new Font("Tahoma", Font.PLAIN, 16));
 								lblOyunSonuc.setText("ILK TAHMIN MAYIN :)");*/
@@ -246,6 +257,7 @@ public class mayinnTarlasi extends JFrame{
 									array[a.yeniHesapYerleri[i]].setText("B");
 									array[a.yeniHesapYerleri[i]].setFont(new Font("Tahoma", Font.BOLD, 16));
 									array[a.yeniHesapYerleri[i]].setForeground(Color.red);
+									array[a.yeniHesapYerleri[i]].setBackground(Color.white);
 								}
 								for(int i=0;i<256; i++)
 								{
@@ -268,6 +280,7 @@ public class mayinnTarlasi extends JFrame{
 								array[a.yeniHesapYerleri[i]].setFont(new Font("Tahoma", Font.BOLD, 16));
 								array[a.yeniHesapYerleri[i]].setForeground(Color.red);
 								array[a.yeniHesapYerleri[i]].setEnabled(false);
+								array[a.yeniHesapYerleri[i]].setBackground(Color.white);
 							}
 							//a.MatrisCiz(matrisBoyutu, sutunSayisi);
 						}
@@ -308,6 +321,7 @@ public class mayinnTarlasi extends JFrame{
 			array[i] = new JButton(/*String.valueOf(i)*/);
 			array[i].setFont(new Font("Tahoma", Font.PLAIN, 10));
 			array[i].setBounds(70+ofset1*count2, 90+ofset2, ofset1+1, ofset3+1);
+			array[i].setBackground(butonRengi);
 			array[i].addActionListener(listener);
 			array[i].setName(String.valueOf(i+1));
 			//panel.add(array[i]);
