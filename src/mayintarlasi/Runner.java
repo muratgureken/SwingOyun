@@ -16,5 +16,4 @@ public class Runner {
 		oyun.setTitle("MAYIN TARLASI");
 		oyun.setVisible(true);
 	}
-
 }
